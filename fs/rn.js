@@ -1,15 +1,23 @@
 import {rename as newname} from 'node:fs';
+import os from "node:os"
 
-const dir = import.meta.dirname;
+const dir = os.homedir();
 
-const rename = async () => {
+const rename = async (input) => {
+    const arr = input.trim().split(' ');
+    if (arr.length <= 1) {
+        console.log("Please enter filename")
 
-    const oldFileName = process.argv[2]
-    const newFileName = process.argv[3]
+    } else {
+        arr.shift();
+        const oldFileName = arr[0]
+        const newFileName = arr[1]
+        await newname(`${dir}/${oldFileName}`, `${dir}/${newFileName}`, (err) => {
+            err ? console.error(err.message) : console.log('File renamed!')
+        });
+    }
 
-    await newname(`${dir}/files/${oldFileName}`, `${dir}/files/${newFileName}`, (err) => {
-        err ? console.error(err.message) : console.log('File renamed!')
-    });
+
 };
 
-await rename();
+export default await rename;

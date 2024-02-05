@@ -1,16 +1,23 @@
 import {unlink} from 'node:fs';
+import os from "node:os"
 
-const dir = import.meta.dirname;
+const dir = os.homedir()
 
-const remove = async () => {
 
-    const fileName = process.argv[2]
+const remove = async (input) => {
+    const arr = input.trim().split(' ');
+    if (arr.length <= 1) {
+        console.log("Please enter filename")
 
-    unlink(`${dir}/files/${fileName}`, err => {
-        if (err) throw err.message
-        console.log("File deleted")
-    });
+    } else {
+        arr.shift();
+        const fileName = arr[0]
 
+        unlink(`${dir}/files/${fileName}`, err => {
+            if (err) throw err.message
+            console.log("File deleted")
+        });
+    }
 };
 
-await remove();
+export default await remove

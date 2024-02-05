@@ -1,25 +1,34 @@
 import fs, {unlink} from 'node:fs'
 
-const dir = import.meta.dirname;
+import os from "node:os"
 
-const move = async () => {
-    const fileName = process.argv[2]
-    const dirToCopy = process.argv[3]
+const dir = os.homedir()
 
-    const readStream = fs.createReadStream(`${dir}/${fileName}`)
-    const writeStream = fs.createWriteStream(`${dir}/${dirToCopy}/${fileName}`)
+const move = async (input) => {
+    const arr = input.trim().split(' ');
+    if (arr.length <= 1) {
+        console.log("Please enter filename")
 
-    readStream.on('error', err => console.error(err.message))
-    writeStream.on('error', err => console.error(err.message))
+    } else {
+        arr.shift();
+        const fileName = arr[0]
+        const dirToCopy = arr[1]
 
-    readStream.on('close', function () {
-        unlink(`${dir}/${fileName}`, err => {
-            if (err) throw err.message
-            console.log("File moved")
+        const readStream = fs.createReadStream(`${dir}/${fileName}`)
+        const writeStream = fs.createWriteStream(`${dir}/${dirToCopy}/${fileName}`)
+
+        readStream.on('error', err => console.error(err.message))
+        writeStream.on('error', err => console.error(err.message))
+
+        readStream.on('close', function () {
+            unlink(`${dir}/${fileName}`, err => {
+                if (err) throw err.message
+                console.log("File moved")
+            });
         });
-    });
 
-    readStream.pipe(writeStream)
+        readStream.pipe(writeStream)
+    }
 };
 
-await move();
+export default await move

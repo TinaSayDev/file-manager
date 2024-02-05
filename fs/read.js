@@ -1,16 +1,22 @@
 import fs from "node:fs"
+import os from 'node:os'
 
-const dir = import.meta.dirname
+const read = async (input) => {
 
-const read = async () => {
+    let filename = input.trim().split(' ');
+    if (filename.length <= 1) {
+        console.log("Please enter filename")
+    } else {
+        filename.shift();
+         filename = filename.join(' ')
 
-    const filename = process.argv[2]
-    const readStream = fs.createReadStream(`${dir}/files/${filename}`)
+        const readStream = fs.createReadStream(`${os.homedir()}/${filename}`)
 
-    readStream.on('error', err => console.error(err.message))
-    readStream.on('data', chunk => {
-        process.stdout.write(chunk)
-    })
+        readStream.on('error', err => console.error(err.message))
+        readStream.on('data', chunk => {
+            process.stdout.write(chunk)
+        })
+    }
 }
 
-await read();
+export default await read;
