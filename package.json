@@ -8,13 +8,15 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node start.js --username=your_username",
+    "start": "node start.js",
     "add": "node fs/create.js",
     "cat": "node fs/read.js",
     "rn": "node fs/rn.js",
     "cp": "node fs/copy.js",
     "mv": "node fs/move.js",
-    "rm": "node fs/remove.js"
+    "rm": "node fs/remove.js",
+    "os": "node os/eol.js",
+    "hash": "node hash/hash.js"
   },
   "repository": {
     "type": "git",
